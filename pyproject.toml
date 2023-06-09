@@ -8,13 +8,15 @@ packages = [
     { include = "MapAnalyzer", from = "src" },
     { include = "cext", from = "src" }
 ]
-build = "build.py"
+
+[tool.poetry.build]
+generate-setup-file = false
+script = "build.py"
 
 [tool.poetry.dependencies]
 python = "^3.11"
 cython = "^0.29.33"
 numpy = "^1.24.3"
-
 
 [build-system]
 requires = ["poetry-core>=1.1.0", "numpy", "setuptools", "cython"]
