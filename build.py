@@ -1,60 +1,52 @@
-import logging
-
 from setuptools import setup, Extension
-from setuptools.command.build_ext import build_ext as _build_ext
+from setuptools.command.build_ext import build_ext
+import os
+import sys
+import numpy
 
-# https://stackoverflow.com/a/21621689/
-class build_ext(_build_ext):
-    def finalize_options(self):
-        _build_ext.finalize_options(self)
-        # Prevent numpy from thinking it is still in its setup process:
-        __builtins__.__NUMPY_SETUP__ = False
-        import numpy
-        self.include_dirs.append(numpy.get_include())
-
-
-mapping_module = Extension(
-    'mapanalyzerext', sources=['src/cext/ma_ext.c'], extra_compile_args=["-DNDEBUG", "-O2"]
-)
-logger = logging.getLogger(__name__)
-
-requirements = [  # pragma: no cover
-        "wheel",
-        "numpy~=1.22.3",
-        "Cython",
-        "burnysc2",
-        "matplotlib",
-        "scipy",
-        "loguru",
-        "tqdm",
-        "scikit-image",
+ext_modules = [
+    Extension('mapanalyzerext',
+              sources=[os.path.join('src', 'cext', 'ma_ext.c')],
+                include_dirs=[numpy.get_include()],
+              extra_compile_args=["-DNDEBUG", "-O2"]),
 ]
-setup(  # pragma: no cover
-        name="sc2mapanalyzer",
-        # version=f"{__version__}",
-        version="0.0.88",
-        install_requires=requirements,
-        setup_requires=["wheel", "numpy~=1.22.3"],
-        cmdclass={"build_ext": build_ext},
-        ext_modules=[mapping_module],
-        packages=["MapAnalyzer", "MapAnalyzer.cext"],
-        extras_require={
-                "dev": [
-                        "pytest",
-                        "pytest-html",
-                        "monkeytype",
-                        "mypy",
-                        "mpyq",
-                        "pytest-asyncio",
-                        "hypothesis",
-                        "pytest-benchmark",
-                        "sphinx",
-                        "sphinx-autodoc-typehints",
-                        "pytest-cov",
-                        "coverage",
-                        "codecov",
-                        "mutmut",
-                        "radon",
-                ]
-        },
-)
+
+# ext_modules = [
+#     Extension('MapAnalyzer.cext.maanalyzerext',
+#               sources=['src/cext/ma_ext.c'],
+#               include_dirs=['src/cext'],
+#               extra_compile_args=["-DNDEBUG", "-O2"]),
+# ]
+
+class ExtBuilder(build_ext):
+    def run(self):
+        try:
+            build_ext.run(self)
+        except Exception as e:
+            raise BuildFailed(str(e))
+
+    def build_extension(self, ext):
+        try:
+            build_ext.build_extension(self, ext)
+        except Exception as e:
+            raise BuildFailed(str(e))
+
+class BuildFailed(Exception):
+    pass
+
+def build(setup_kwargs):
+    setup_kwargs.update({
+        'ext_modules': ext_modules,
+        'cmdclass': {'build_ext': ExtBuilder},
+    })
+
+if __name__ == '__main__':
+    setup(
+        name='MapAnalyzer',
+        version='0.1.0',
+        description='',
+        packages=['MapAnalyzer'],
+        ext_modules=ext_modules,
+        cmdclass={'build_ext': ExtBuilder},
+        zip_safe=False,
+    )
