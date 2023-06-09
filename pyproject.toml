@@ -1,0 +1,21 @@
+[tool.poetry]
+name = "MapAnalyzer"
+version = "0.1.0"
+description = ""
+authors = []
+readme = "README.md"
+packages = [
+    { include = "MapAnalyzer", from = "src" },
+    { include = "cext", from = "src" }
+]
+build = "build.py"
+
+[tool.poetry.dependencies]
+python = "^3.11"
+cython = "^0.29.33"
+numpy = "^1.24.3"
+
+
+[build-system]
+requires = ["poetry-core>=1.1.0", "numpy", "setuptools", "cython"]
+build-backend = "poetry.core.masonry.api"
