@@ -29,7 +29,7 @@ def update_readme_to_sphinx():
 
 
 def parse_setup():
-    with open("setup.py", 'r') as f:
+    with open("build.py", 'r') as f:
         setup_parsed = f.read()
     return setup_parsed
 
@@ -42,7 +42,7 @@ def makedocs():
     subprocess.check_call(f'{path}//make github', shell=True)
 
 
-@vb.command(help='print setup.py')
+@vb.command(help='print build.py')
 def printsetup():
     setup_parsed = parse_setup()
     click.echo(click.style(setup_parsed, fg='blue'))
@@ -89,14 +89,14 @@ def b_minor(new_version):
     old_version_regex = VERSION_REGEX
     old_version = re.findall(old_version_regex, setup_parsed)[0]
     setup_updated = setup_parsed.replace(old_version, new_version)
-    with open('setup.py', 'w') as f:
+    with open('build.py', 'w') as f:
         f.write(setup_updated)
 
     curdir = os.getcwd()
     click.echo(click.style(curdir + '\\standard-version', fg='blue'))
     subprocess.check_call('git fetch', shell=True)
     subprocess.check_call('git pull', shell=True)
-    subprocess.check_call('git add setup.py', shell=True)
+    subprocess.check_call('git add build.py', shell=True)
     subprocess.check_call(f'git commit -m \" setup bump {new_version} \" ', shell=True)
     subprocess.check_call(f'standard-version --release-as {new_version}', shell=True)
     # subprocess.check_call('git push --follow-tags origin', shell=True)

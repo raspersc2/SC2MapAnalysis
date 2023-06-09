@@ -14,7 +14,7 @@ class build_ext(_build_ext):
 
 
 mapping_module = Extension(
-    'mapanalyzerext', sources=['MapAnalyzer/cext/src/ma_ext.c'], extra_compile_args=["-DNDEBUG", "-O2"]
+    'mapanalyzerext', sources=['src/cext/ma_ext.c'], extra_compile_args=["-DNDEBUG", "-O2"]
 )
 logger = logging.getLogger(__name__)
 
