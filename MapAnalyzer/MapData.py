@@ -1,8 +1,6 @@
 import math
-import time
 from itertools import chain
 from functools import lru_cache
-from os import mkdir, path
 from typing import Dict, List, Optional, Set, Tuple, Union
 
 import numpy as np
@@ -31,7 +29,6 @@ from .constants import (
     MIN_REGION_AREA,
 )
 
-from .decorators import progress_wrapped
 from .exceptions import CustomDeprecationWarning
 from MapAnalyzer.constructs import ChokeArea, MDRamp, VisionBlockerArea, RawChoke
 from .cext import CMapInfo, CMapChoke
@@ -842,10 +839,6 @@ class MapData:
 
             i += 1
 
-    @progress_wrapped(
-        estimated_time=0,
-        desc=f"\u001b[32m Version {__version__} Map Compilation Progress \u001b[37m",
-    )
     def _compile_map(self) -> None:
         self._calc_grid()
         self._calc_regions()
