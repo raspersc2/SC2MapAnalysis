@@ -1,0 +1,21 @@
+[tool.poetry]
+name = "MapAnalyzer"
+version = "0.0.87"
+description = ""
+authors = ["Your Name <you@example.com>"]
+license = "GNU"
+readme = "README.md"
+
+[tool.poetry.build]
+script = "build.py"
+generate-setup-file = true
+
+[tool.poetry.dependencies]
+python = ">=3.11,<3.12"
+burnysc2 = "^6.4.0"
+
+
+[build-system]
+requires = ["poetry-core", "numpy", "setuptools"]
+build-backend = "poetry.core.masonry.api"
+
