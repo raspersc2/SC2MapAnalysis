@@ -5,7 +5,6 @@ from random import randint
 from typing import Tuple, Iterable, List
 
 import pytest
-import tqdm
 from _pytest.python import Metafunc
 from hypothesis import given, settings, strategies as st
 from loguru import logger
