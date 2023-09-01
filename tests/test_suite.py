@@ -2,13 +2,13 @@ from random import randint
 
 from _pytest.python import Metafunc
 from hypothesis import given, settings
+from hypothesis import strategies as st
 from loguru import logger
 from sc2.position import Point2
 
 from MapAnalyzer.MapData import MapData
 from MapAnalyzer.utils import get_map_file_list, mock_map_data
 from tests.mocksetup import get_map_datas, random
-from hypothesis import given, settings, strategies as st
 
 
 # From
