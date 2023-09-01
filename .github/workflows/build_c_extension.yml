@@ -36,5 +36,4 @@ jobs:
         with:
           name: ${{ matrix.os }}_python${{ matrix.python-version }}
           path: |
-            ./mapanalyzerext*
-            mapanalyzerext*
+            ./
