@@ -27,7 +27,7 @@ jobs:
           poetry install --with dev
       - name: Test with pytest + Coverage
         run: |
-          pytest --html=html/${{ matrix.os }}-test-results-${{ matrix.python-version }}.html
+          poetry run pytest --html=html/${{ matrix.os }}-test-results-${{ matrix.python-version }}.html
       - name: Upload pytest test results
         uses: actions/upload-artifact@v2
         with:
