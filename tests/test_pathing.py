@@ -218,7 +218,8 @@ class TestPathing:
             from_pos=cost_point, radius=safe_query_radius, grid=influence_grid
         )
         assert (
-            safe_points[0][0] == np.integer
+            safe_points[0][0],
+            np.integer,
         ), f"safe_points[0][0] = {safe_points[0][0]}, type {type(safe_points[0][0])}"
         assert isinstance(
             safe_points[0][1], np.integer
