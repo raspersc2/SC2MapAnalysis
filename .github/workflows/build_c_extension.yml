@@ -27,11 +27,12 @@ jobs:
         with:
           python-version: '3.11'
           cache: 'poetry'
+      # Install requirements and build extension
       - name: Install requirements and build extension
         run: |
           poetry install
-          find . -name 'mapanalyzerext*' -exec cp {} . \;
+          python -c "import shutil, glob; [shutil.copy(f, '.') for f in glob.glob('mapanalyzerext*')]"
       - uses: actions/upload-artifact@v3
         with:
           name: ${{ matrix.os }}_python${{ matrix.python-version }}
-          path: ./
+          path: ./mapanalyzerext*
