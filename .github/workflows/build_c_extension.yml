@@ -32,4 +32,6 @@ jobs:
       - uses: actions/upload-artifact@v3
         with:
           name: ${{ matrix.os }}_python${{ matrix.python-version }}
-          path: ./mapanalyzerext*
+          path: |
+            ./mapanalyzerext*
+            mapanalyzerext*
