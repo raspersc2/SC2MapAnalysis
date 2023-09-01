@@ -2,9 +2,9 @@ name: BuildOnSetup
 
 on:
   push:
-    branches: [ master, develop, build/migrate-to-poetry ]
+    branches: [ master, develop ]
   pull_request:
-    branches: [ master, develop, build/migrate-to-poetry ]
+    branches: [ master, develop ]
 
 
 jobs:
