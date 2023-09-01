@@ -28,10 +28,10 @@ jobs:
           python-version: '3.11'
           cache: 'poetry'
       - name: Install requirements and build extension
-        run: poetry install
+        run: |
+          poetry install
+          find . -name 'mapanalyzerext*' -exec cp {} . \;
       - uses: actions/upload-artifact@v3
         with:
           name: ${{ matrix.os }}_python${{ matrix.python-version }}
-          path: |
-            ./mapanalyzerext*
-            mapanalyzerext*
+          path: ./

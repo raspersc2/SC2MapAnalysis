@@ -1,4 +1,4 @@
-name: BuildOnSetup
+name: RunTests
 
 on:
   push:
