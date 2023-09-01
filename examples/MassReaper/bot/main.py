@@ -1,13 +1,14 @@
 from typing import Optional, Set
+
+from bot.consts import ATTACK_TARGET_IGNORE
+from bot.pathing import Pathing
+from bot.reapers import Reapers
 from sc2.bot_ai import BotAI
 from sc2.ids.ability_id import AbilityId
 from sc2.ids.unit_typeid import UnitTypeId
 from sc2.position import Point2
 from sc2.unit import Unit
 from sc2.units import Units
-from bot.pathing import Pathing
-from bot.reapers import Reapers
-from bot.consts import ATTACK_TARGET_IGNORE
 
 DEBUG: bool = False
 
@@ -68,11 +69,13 @@ class MassReaper(BotAI):
 
     async def _do_mass_reaper_macro(self, iteration: int):
         """
-        Stolen from https://github.com/BurnySc2/python-sc2/blob/develop/examples/terran/mass_reaper.py
+        Stolen from
+        https://github.com/BurnySc2/python-sc2/blob/develop/examples/terran/mass_reaper.py
         With a few small tweaks
         - build depots when low on remaining supply
         - townhalls contains commandcenter and orbitalcommand
-        - self.units(TYPE).not_ready.amount selects all units of that type, filters incomplete units, and then counts the amount
+        - self.units(TYPE).not_ready.amount selects all units of that type,
+        filters incomplete units, and then counts the amount
         - self.already_pending(TYPE) counts how many units are queued
         """
         if (
@@ -97,9 +100,11 @@ class MassReaper(BotAI):
             depot(AbilityId.MORPH_SUPPLYDEPOT_LOWER)
 
         # Morph commandcenter to orbitalcommand
-        # Check if tech requirement for orbital is complete (e.g. you need a barracks to be able to morph an orbital)
+        # Check if tech requirement for orbital is complete (e.g. you need a
+        # barracks to be able to morph an orbital)
         if self.tech_requirement_progress(UnitTypeId.ORBITALCOMMAND) == 1:
-            # Loop over all idle command centers (CCs that are not building SCVs or morphing to orbital)
+            # Loop over all idle command centers
+            # (CCs that are not building SCVs or morphing to orbital)
             for cc in self.townhalls(UnitTypeId.COMMANDCENTER).idle:
                 if self.can_afford(UnitTypeId.ORBITALCOMMAND):
                     cc(AbilityId.UPGRADETOORBITAL_ORBITALCOMMAND)
@@ -110,7 +115,8 @@ class MassReaper(BotAI):
             and self.already_pending(UnitTypeId.COMMANDCENTER) == 0
             and self.can_afford(UnitTypeId.COMMANDCENTER)
         ):
-            # get_next_expansion returns the position of the next possible expansion location where you can place a command center
+            # get_next_expansion returns the position of the next
+            # possible expansion location where you can place a command center
             location: Point2 = await self.get_next_expansion()
             if location:
                 # Now we "select" (or choose) the nearest worker to that found location
@@ -131,9 +137,11 @@ class MassReaper(BotAI):
             workers: Units = self.workers.gathering
             if (
                 workers and self.townhalls
-            ):  # need to check if townhalls.amount > 0 because placement is based on townhall location
+            ):  # need to check if townhalls.amount > 0 because placement is
+                # based on townhall location
                 worker: Unit = workers.furthest_to(workers.center)
-                # I chose placement_step 4 here so there will be gaps between barracks hopefully
+                # I chose placement_step 4 here so there
+                # will be gaps between barracks hopefully
                 location: Point2 = await self.find_placement(
                     UnitTypeId.BARRACKS,
                     self.townhalls.random.position.towards(
@@ -144,7 +152,8 @@ class MassReaper(BotAI):
                 if location:
                     worker.build(UnitTypeId.BARRACKS, location)
 
-        # Build refineries (on nearby vespene) when at least one barracks is in construction
+        # Build refineries (on nearby vespene) when at least
+        # one barracks is in construction
         if (
             self.structures(UnitTypeId.BARRACKS).ready.amount
             + self.already_pending(UnitTypeId.BARRACKS)
@@ -153,7 +162,8 @@ class MassReaper(BotAI):
         ):
             # Loop over all townhalls nearly complete
             for th in self.townhalls.filter(lambda _th: _th.build_progress > 0.3):
-                # Find all vespene geysers that are closer than range 10 to this townhall
+                # Find all vespene geysers that are closer
+                # than range 10 to this townhall
                 vgs: Units = self.vespene_geyser.closer_than(10, th)
                 for vg in vgs:
                     if await self.can_place_single(
@@ -162,7 +172,8 @@ class MassReaper(BotAI):
                         workers: Units = self.workers.gathering
                         if workers:  # same condition as above
                             worker: Unit = workers.closest_to(vg)
-                            # Caution: the target for the refinery has to be the vespene geyser, not its position!
+                            # Caution: the target for the refinery has to be the
+                            # vespene geyser, not its position!
                             worker.build_gas(vg)
 
                             # Dont build more than one each frame
@@ -202,7 +213,8 @@ class MassReaper(BotAI):
                 mf: Unit = max(mfs, key=lambda x: x.mineral_contents)
                 oc(AbilityId.CALLDOWNMULE_CALLDOWNMULE, mf)
 
-    # Distribute workers function rewritten, the default distribute_workers() function did not saturate gas quickly enough
+    # Distribute workers function rewritten, the default distribute_workers()
+    # function did not saturate gas quickly enough
     # pylint: disable=R0912
     async def my_distribute_workers(
         self, performance_heavy=True, only_saturate_gas=False
@@ -258,7 +270,8 @@ class MassReaper(BotAI):
                             worker_pool_tags.add(w.tag)
                     surplus_townhalls[th.tag] = {"unit": th, "deficit": deficit}
 
-        # Check if deficit in gas less or equal than what we have in surplus, else grab some more workers from surplus bases
+        # Check if deficit in gas less or equal than what we have in
+        # surplus, else grab some more workers from surplus bases
         deficit_gas_count = sum(
             gasInfo["deficit"]
             for gasTag, gasInfo in deficit_gas_buildings.items()
@@ -296,10 +309,13 @@ class MassReaper(BotAI):
                     worker_pool.append(w)
                     worker_pool_tags.add(w.tag)
 
-        # Now we should have enough workers in the pool to saturate all gases, and if there are workers left over, make them mine at townhalls that have mineral workers deficit
+        # Now we should have enough workers in the pool to saturate all gases,
+        # and if there are workers left over, make them mine at townhalls
+        # that have mineral workers deficit
         for _gas_tag, gas_info in deficit_gas_buildings.items():
             if performance_heavy:
-                # Sort furthest away to closest (as the pop() function will take the last element)
+                # Sort the furthest away to closest
+                # (as the pop() function will take the last element)
                 worker_pool.sort(
                     key=lambda x: x.distance_to(gas_info["unit"]), reverse=True
                 )
@@ -314,11 +330,12 @@ class MassReaper(BotAI):
                         w.gather(gas_info["unit"])
 
         if not only_saturate_gas:
-            # If we now have left over workers, make them mine at bases with deficit in mineral workers
+            # If we now have left over workers,
+            # make them mine at bases with deficit in mineral workers
             for townhall_tag, townhall_info in deficit_townhalls.items():
-
                 if performance_heavy:
-                    # Sort furthest away to closest (as the pop() function will take the last element)
+                    # Sort furthest away to closest
+                    # (as the pop() function will take the last element)
                     worker_pool.sort(
                         key=lambda x: x.distance_to(townhall_info["unit"]), reverse=True
                     )

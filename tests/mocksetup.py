@@ -1,29 +1,24 @@
 import logging
 import os
 import random
-from random import randint
-from typing import Tuple, Iterable, List
+from typing import Iterable, Tuple
 
 import pytest
-from _pytest.python import Metafunc
-from hypothesis import given, settings, strategies as st
+from _pytest.logging import caplog as _caplog
 from loguru import logger
 
 from MapAnalyzer.MapData import MapData
-from MapAnalyzer.Region import Region
-from MapAnalyzer.Polygon import Polygon
-from MapAnalyzer.constructs import ChokeArea, MDRamp, VisionBlockerArea
 from MapAnalyzer.utils import mock_map_data
-from _pytest.logging import caplog as _caplog
 
-
-# for merging pr from forks,  git push <pr-repo.git> <your-local-branch-name>:<pr-branch-name>
+# for merging pr from forks,
+# git push <pr-repo.git> <your-local-branch-name>:<pr-branch-name>
 # pytest -v --disable-warnings
 # mutmut run --paths-to-mutate test_suite.py --runner pytest
 # radon cc . -a -nb  (will dump only complexity score of B and below)
 # monkeytype run monkeytest.py
 # monkeytype list-modules
 # mutmut run --paths-to-mutate MapAnalyzer/MapData.py
+
 
 def get_random_point(minx: int, maxx: int, miny: int, maxy: int) -> Tuple[int, int]:
     return random.randint(minx, maxx), random.randint(miny, maxy)
@@ -53,5 +48,5 @@ def get_map_datas() -> Iterable[MapData]:
     for map_file in map_files:
         # EphemeronLE has a ramp with 3 regions which causes a test failure
         # https://github.com/eladyaniv01/SC2MapAnalysis/issues/110
-        if 'ephemeron' not in map_file.lower():
+        if "ephemeron" not in map_file.lower():
             yield mock_map_data(map_file=os.path.join(map_files_folder, map_file))

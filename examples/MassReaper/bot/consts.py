@@ -1,4 +1,5 @@
 from typing import Set
+
 from sc2.ids.unit_typeid import UnitTypeId
 
 ATTACK_TARGET_IGNORE: Set[UnitTypeId] = {

@@ -1,12 +1,15 @@
 """
 This is used in `pathing.py`
 These are units where we want to define our own weights and costs
-Some of these units don't have a "weapon" in the API so we provide values for range and cost here
+Some of these units don't have a "weapon" in the API so we provide
+values for range and cost here
 Some of these units might have a weapon but we can declare custom values
-For any units not declared here we take values from the API instead when adding influence
+For any units not declared here we take values from the API instead
+when adding influence
 """
 
 from typing import Dict
+
 from sc2.ids.unit_typeid import UnitTypeId
 
 INFLUENCE_COSTS: Dict[UnitTypeId, Dict] = {

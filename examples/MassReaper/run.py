@@ -4,9 +4,9 @@ import sys
 from bot.main import MassReaper
 from ladder import run_ladder_game
 from sc2 import maps
-from sc2.data import Race, Difficulty
+from sc2.data import Difficulty, Race
 from sc2.main import run_game
-from sc2.player import Bot, Computer, AIBuild
+from sc2.player import AIBuild, Bot, Computer
 
 bot1 = Bot(Race.Terran, MassReaper())
 

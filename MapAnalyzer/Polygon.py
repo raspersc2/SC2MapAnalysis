@@ -1,9 +1,9 @@
 from functools import lru_cache
-from typing import List, Set, Tuple, TYPE_CHECKING, Union
+from typing import TYPE_CHECKING, List, Set, Union
 
 import numpy as np
 from loguru import logger
-from numpy import int64, ndarray
+from numpy import ndarray
 from sc2.position import Point2
 from scipy.ndimage import center_of_mass
 
@@ -33,7 +33,8 @@ class Buildables:
     def free_pct(self) -> float:
         """
 
-        A simple method for knowing what % of the points is left available out of the total
+        A simple method for knowing what % of the points
+        is left available out of the total
 
         """
         if self.points is None:
@@ -44,9 +45,11 @@ class Buildables:
     def update(self) -> None:
         """
 
-        To be called only by :class:`.Polygon`, this ensures that updates are done in a lazy fashion,
+        To be called only by :class:`.Polygon`, this ensures that
+        updates are done in a lazy fashion,
 
-        the update is evaluated only when there is need for the information, otherwise it is ignored
+        the update is evaluated only when there is need for the information,
+        otherwise it is ignored
 
         """
         parr = self.polygon.map_data.points_to_numpy_array(self.polygon.points)
@@ -118,7 +121,8 @@ class Polygon:
 
         :rtype: :class:`.BuildablePoints`
 
-        Is a responsible for holding and updating the buildable points of it's respected :class:`.Polygon`
+        Is a responsible for holding and updating the buildable points
+        of it's respected :class:`.Polygon`
 
         """
         self._buildables.update()
@@ -130,7 +134,8 @@ class Polygon:
 
         :rtype: List[:class:`.Region`]
 
-        Filters out every Polygon that is not a region, and is inside / bordering with ``self``
+        Filters out every Polygon that is not a region,
+        and is inside / bordering with ``self``
 
         """
         from MapAnalyzer.Region import Region
@@ -140,9 +145,10 @@ class Polygon:
         return []
 
     def calc_areas(self) -> None:
-        # This is called by MapData, at a specific point in the sequence of compiling the map
-        # this method uses where_all which means
-        # it should be called at the end of the map compilation when areas are populated
+        # This is called by MapData, at a specific point in the
+        # sequence of compiling the map this method uses where_all
+        # which means it should be called at the end of the map
+        # compilation when areas are populated
 
         areas = self.areas
         for point in self.outer_perimeter:

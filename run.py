@@ -4,8 +4,9 @@ import pickle
 import random
 from typing import List
 
-from sc2.position import Point2
 import matplotlib.pyplot as plt
+from sc2.position import Point2
+
 from MapAnalyzer.MapData import MapData
 from MapAnalyzer.utils import import_bot_instance
 
@@ -17,9 +18,10 @@ def get_random_point(minx, maxx, miny, maxy):
 def _get_random_influence(n, r):
     pts = []
     for i in range(n):
-        pts.append(
-                (Point2(get_random_point(50, 130, 25, 175)), r))
+        pts.append((Point2(get_random_point(50, 130, 25, 175)), r))
     return pts
+
+
 def get_map_file_list() -> List[str]:
     """
     easy way to produce less than all maps,  for example if we want to test utils, we only need one MapData object
@@ -38,7 +40,7 @@ def get_map_file_list() -> List[str]:
 
 map_files = get_map_file_list()
 for mf in map_files:
-    if 'abys' in mf.lower():
+    if "abys" in mf.lower():
         # if 1==1:
         #     mf = random.choice(map_files)
         # if 'abys' in mf.lower():

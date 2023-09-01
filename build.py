@@ -6,8 +6,11 @@ from setuptools import Extension
 from setuptools.command.build_ext import build_ext
 
 extensions = [
-    Extension("mapanalyzerext", sources=["MapAnalyzer/cext/src/ma_ext.c"], include_dirs=[numpy.get_include()]),
-
+    Extension(
+        "mapanalyzerext",
+        sources=["MapAnalyzer/cext/src/ma_ext.c"],
+        include_dirs=[numpy.get_include()],
+    ),
 ]
 
 
@@ -30,4 +33,6 @@ class ExtBuilder(build_ext):
 
 
 def build(setup_kwargs):
-    setup_kwargs.update({"ext_modules": extensions, "cmdclass": {"build_ext": ExtBuilder}})
+    setup_kwargs.update(
+        {"ext_modules": extensions, "cmdclass": {"build_ext": ExtBuilder}}
+    )

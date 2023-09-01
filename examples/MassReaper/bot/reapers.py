@@ -95,7 +95,8 @@ class Reapers:
     @staticmethod
     def pick_enemy_target(enemies: Units) -> Unit:
         """For best enemy target from the provided enemies
-        TODO: If there are multiple units that can be killed in one shot, pick the highest value one
+        TODO: If there are multiple units that can be killed in one shot,
+        pick the highest value one
         """
         return min(
             enemies,
@@ -114,7 +115,8 @@ class Reapers:
         )
 
         if enemy_ground_units_in_grenade_range and (r.is_attacking or r.is_moving):
-            # If AbilityId.KD8CHARGE_KD8CHARGE in abilities, we check that to see if the reaper grenade is off cooldown
+            # If AbilityId.KD8CHARGE_KD8CHARGE in abilities,
+            # we check that to see if the reaper grenade is off cooldown
             abilities = await self.ai.get_available_abilities(r)
             enemy_ground_units_in_grenade_range = (
                 enemy_ground_units_in_grenade_range.sorted(

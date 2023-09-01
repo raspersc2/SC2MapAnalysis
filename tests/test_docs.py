@@ -1,9 +1,11 @@
-from .mocksetup import *
-from MapAnalyzer.utils import get_map_files_folder
-from MapAnalyzer.settings import ROOT_DIR
 import doctest
 
-goldenwall = os.path.join(get_map_files_folder(), 'GoldenWallLE.xz')
+from MapAnalyzer.settings import ROOT_DIR
+from MapAnalyzer.utils import get_map_files_folder
+
+from .mocksetup import *
+
+goldenwall = os.path.join(get_map_files_folder(), "GoldenWallLE.xz")
 map_data = mock_map_data(goldenwall)
 
 

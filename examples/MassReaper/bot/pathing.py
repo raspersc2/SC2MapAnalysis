@@ -1,6 +1,7 @@
 """
 This provides a wrapper for the MapAnalyzer library
-Here we are only using the Pathing module in MapAnalyzer, there are more features to explore!
+Here we are only using the Pathing module in MapAnalyzer,
+there are more features to explore!
 We add enemy influence to the pathing grids
 And implement pathing methods our units can use
 """
@@ -17,7 +18,8 @@ from scipy import spatial
 
 from MapAnalyzer import MapData
 
-# When adding enemies to the grids add a bit extra range so our units stay out of trouble
+# When adding enemies to the grids add a bit extra range
+# so our units stay out of trouble
 RANGE_BUFFER: float = 3.0
 
 
@@ -34,7 +36,8 @@ class Pathing:
         # for reapers / colossus we need a special grid to use the cliffs
         self.reaper_grid: np.ndarray = self.map_data.get_climber_grid()
 
-        # ground grid not actually used in this example, but is setup ready to go for other ground units
+        # ground grid not actually used in this example,
+        # but is setup ready to go for other ground units
         self.ground_grid: np.ndarray = self.map_data.get_pyastar_grid()
 
         # air grid if needed, would need to add enemy influence
@@ -44,7 +47,8 @@ class Pathing:
         self.ground_grid = self.map_data.get_pyastar_grid()
         self.reaper_grid = self.map_data.get_climber_grid()
         for unit in self.ai.all_enemy_units:
-            # checking if a unit is a structure this way is faster then using `if unit.is_structure` :)
+            # checking if a unit is a structure this way is
+            # faster than using `if unit.is_structure` :)
             if unit.type_id in ALL_STRUCTURES:
                 self._add_structure_influence(unit)
             else:
@@ -109,7 +113,8 @@ class Pathing:
         weight_safety_limit: float = 1.0,
     ) -> bool:
         """
-        Checks if the current position is dangerous by comparing against default_grid_weights
+        Checks if the current position is dangerous by
+        comparing against default_grid_weights
         @param grid: Grid we want to check
         @param position: Position of the unit etc
         @param weight_safety_limit: The threshold at which we declare the position safe
@@ -130,7 +135,8 @@ class Pathing:
         @return:
         """
         # this unit is in our dictionary where we define custom weights and ranges
-        # it could be this unit doesn't have a weapon in the API or we just want to use custom values
+        # it could be this unit doesn't have a weapon in the API
+        # or we just want to use custom values
         if enemy.type_id in INFLUENCE_COSTS:
             values: Dict = INFLUENCE_COSTS[enemy.type_id]
             (self.ground_grid, self.reaper_grid) = self._add_cost_to_multiple_grids(
@@ -139,7 +145,8 @@ class Pathing:
                 values["GroundRange"] + RANGE_BUFFER,
                 [self.ground_grid, self.reaper_grid],
             )
-        # this unit has values in the API and is not in our custom dictionary, take them from there
+        # this unit has values in the API and is not in our custom dictionary,
+        # take them from there
         elif enemy.can_attack_ground:
             (self.ground_grid, self.reaper_grid) = self._add_cost_to_multiple_grids(
                 enemy.position,
