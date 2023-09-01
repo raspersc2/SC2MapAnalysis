@@ -31,8 +31,10 @@ jobs:
       - name: Install requirements and build extension
         run: |
           poetry install
-          python -c "import shutil, glob; [shutil.copy(f, '.') for f in glob.glob('mapanalyzerext*')]"
+          python -c "import shutil, glob, os; [shutil.copy(f, '.') for f in glob.glob('mapanalyzerext*') if not os.path.exists(os.path.join('.', os.path.basename(f)))]"
       - uses: actions/upload-artifact@v3
         with:
           name: ${{ matrix.os }}_python${{ matrix.python-version }}
-          path: ./mapanalyzerext*
+          path: |
+            ./mapanalyzerext*
+            mapanalyzerext*
