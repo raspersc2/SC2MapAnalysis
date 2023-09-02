@@ -20,7 +20,7 @@ jobs:
           ref: ${{ github.head_ref }}
       # install poetry
       - name: Install poetry
-        run: pipx install poetry==1.3.2
+        run: pipx install poetry==1.6.1
       # set-up python with cache
       - name: Setup Python 3.11
         uses: actions/setup-python@v4
@@ -37,6 +37,9 @@ jobs:
       - name: Install requirements and build extension
         run: |
           poetry install --verbose
+      - name: Build C Extension
+        if: matrix.os == 'ubuntu-latest'
+        run: python build.py build_ext --inplace
       - uses: actions/upload-artifact@v3
         with:
           name: ${{ matrix.os }}_python${{ matrix.python-version }}
