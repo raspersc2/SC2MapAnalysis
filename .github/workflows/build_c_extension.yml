@@ -36,7 +36,7 @@ jobs:
       # Install requirements and build extension
       - name: Install requirements and build extension
         run: |
-          poetry install
+          poetry install --verbose
       - uses: actions/upload-artifact@v3
         with:
           name: ${{ matrix.os }}_python${{ matrix.python-version }}
