@@ -39,7 +39,7 @@ jobs:
           poetry install --verbose
       - name: Build C Extension
         if: matrix.os == 'ubuntu-latest'
-        run: python build.py build_ext --inplace
+        run: poetry run python build.py build_ext --inplace
       - uses: actions/upload-artifact@v3
         with:
           name: ${{ matrix.os }}_python${{ matrix.python-version }}
