@@ -2,6 +2,10 @@
 
 <!--next-version-placeholder-->
 
+## v0.2.0 (2023-09-03)
+### Feature
+* Force release ([`5e16e5d`](https://github.com/raspersc2/SC2MapAnalysis/commit/5e16e5dd32a84f6a5fdc936a1099f3ea25a994e5))
+
 ## v0.1.0 (2023-09-03)
 ### Feature
 * Add ladder compatible version of the c extension in the repo ([`500a900`](https://github.com/raspersc2/SC2MapAnalysis/commit/500a900d4d5ae22ab5d1391a23dd45ca129e43f7))
