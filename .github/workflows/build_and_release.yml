@@ -6,27 +6,55 @@ on:
       - build/migrate-to-poetry
 
 jobs:
-  release:
+  create_release:
+    name: Create release
     runs-on: ubuntu-latest
-
+    # Note this. We are going to use that in further jobs.
+    outputs:
+      upload_url: ${{ steps.create_release.outputs.upload_url }}
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-
-      - name: Set up Python
-        uses: actions/setup-python@v2
+      - name: Create release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          python-version: 3.11
+          tag_name: ${{ github.ref }}
+          release_name: Release ${{ github.ref }}
+          draft: false
+          prerelease: false
 
-      - name: Install Poetry
-        run: |
-          pipx install poetry==1.6.1
-        shell: bash
-
-      - name: Install project dependencies
-        run: |
-          poetry install --with dev
-        shell: bash
+  release_assets:
+    name: Release assets
+    needs: create_release # we need to know the upload URL
+    runs-on: ${{ matrix.config.os }}
+    strategy:
+      matrix:
+        config:
+          - os: ubuntu-latest
+          - os: macos-latest
+          - os: windows-latest
+    steps:
+      # checkout of cource
+      # check-out repo
+      - name: Checkout repository
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ github.head_ref }}
+          token: ${{ secrets.GH_TOKEN_MA }}
+          fetch-depth: 0
+      # install poetry
+      - name: Install poetry
+        run: pipx install poetry==1.6.1
+      # set-up python with cache
+      - name: Setup Python 3.11
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+          cache: 'poetry'
+      # install requirements
+      - name: Install requirements
+        run: poetry install --with dev
 
       - name: Create output directory
         run: mkdir out
@@ -34,21 +62,24 @@ jobs:
       - name: Move files to out folder
         run: |
           python -c "import shutil, glob, os; [shutil.copy(f, './out') for f in glob.glob('mapanalyzerext*') if not os.path.exists(os.path.join('.', os.path.basename(f)))]"
+
       - name: Copy directory
         run: |
           cp -r MapAnalyzer out
-        working-directory: ${{ github.workspace }}
-      # Use python-semantic-release to determine the version and generate changelogs.
-      - name: Semantic Release
-        env:
-          GITHUB_TOKEN: ${{ secrets.GH_TOKEN_MA }}
-        run: |
-          poetry run semantic-release publish -v DEBUG -D commit_author="github-actions <action@github.com>"
-        shell: bash
 
-      # Upload the release artifact to the GitHub release.
-      - name: Upload Artifact
-        uses: actions/upload-artifact@v2
+      - name: Upload release assets
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          name: my-artifact  # Specify a name for the artifact
-          path: out/  # Specify the folder containing your release artifacts
+          upload_url: ${{ needs.create_release.outputs.upload_url }}
+          # This is how it will be named on the release page. Put hatever name
+          # you like, remember that they need to be different for each platform.
+          # You can choose any build matrix parameters. For Rust I use the
+          # target triple.
+          asset_name: program-name-${{ matrix.config.os }}
+          # The path to the file you want to upload.
+          asset_path: ./out
+          # probably you will need to change it, but most likely you are
+          # uploading a binary file
+          asset_content_type: application/octet-stream
