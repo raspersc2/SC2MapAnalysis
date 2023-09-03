@@ -1,0 +1,54 @@
+name: Semantic Release with Artifact Upload
+
+on:
+  push:
+    branches:
+      - build/migrate-to-poetry
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.11
+
+      - name: Install Poetry
+        run: |
+          pipx install poetry==1.6.1
+        shell: bash
+
+      - name: Install project dependencies
+        run: |
+          poetry install --with dev
+        shell: bash
+
+      - name: Create output directory
+        run: mkdir out
+
+      - name: Move files to out folder
+        run: |
+          python -c "import shutil, glob, os; [shutil.copy(f, './out') for f in glob.glob('mapanalyzerext*') if not os.path.exists(os.path.join('.', os.path.basename(f)))]"
+      - name: Copy directory
+        run: |
+          cp -r MapAnalyzer out
+        working-directory: ${{ github.workspace }}
+      # Use python-semantic-release to determine the version and generate changelogs.
+      - name: Semantic Release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GH_TOKEN_MA }}
+        run: |
+          poetry run semantic-release publish -v DEBUG -D commit_author="github-actions <action@github.com>"
+        shell: bash
+
+      # Upload the release artifact to the GitHub release.
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: my-artifact  # Specify a name for the artifact
+          path: out/  # Specify the folder containing your release artifacts

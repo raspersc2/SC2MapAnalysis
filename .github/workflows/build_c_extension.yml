@@ -21,7 +21,7 @@ jobs:
           ref: ${{ github.head_ref }}
       # install poetry
       - name: Install poetry
-        run: pipx install poetry==1.6.1
+        run: pipx install poetry==1.5
       # set-up python with cache
       - name: Setup Python 3.11
         uses: actions/setup-python@v4
@@ -31,11 +31,11 @@ jobs:
       # Install requirements and build extension
       - name: Install requirements and build extension
         run: |
-          poetry install
+          poetry install --with dev
           python -c "import shutil, glob, os; [shutil.copy(f, '.') for f in glob.glob('mapanalyzerext*') if not os.path.exists(os.path.join('.', os.path.basename(f)))]"
       - uses: actions/upload-artifact@v3
         with:
           name: ${{ matrix.os }}_python${{ matrix.python-version }}
           path: |
-            mapanalyzerext*
             ./mapanalyzerext*
+            mapanalyzerext*
