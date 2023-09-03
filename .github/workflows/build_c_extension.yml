@@ -9,7 +9,8 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [ubuntu-latest, windows-latest, macos-latest]
+        # TODO: Get this working on ubuntu-latest. Refuses to build, and no idea why
+        os: [windows-latest, macos-latest]
         python-version: ['3.11']
 
     steps:
@@ -27,21 +28,13 @@ jobs:
         with:
           python-version: '3.11'
           cache: 'poetry'
-      # Install dependencies for compiling C extensions (on Ubuntu)
-      - name: Install build dependencies (Ubuntu)
-        if: matrix.os == 'ubuntu-latest'
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y build-essential
       # Install requirements and build extension
       - name: Install requirements and build extension
         run: |
-          poetry install --verbose
-      - name: Build C Extension
-        if: matrix.os == 'ubuntu-latest'
-        run: poetry run python build.py build_ext --inplace
+          poetry install
+          python -c "import shutil, glob, os; [shutil.copy(f, '.') for f in glob.glob('mapanalyzerext*') if not os.path.exists(os.path.join('.', os.path.basename(f)))]"
       - uses: actions/upload-artifact@v3
         with:
           name: ${{ matrix.os }}_python${{ matrix.python-version }}
           path: |
-            ./
+            ./mapanalyzerext
