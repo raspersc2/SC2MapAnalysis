@@ -32,7 +32,7 @@ scikit-image = "^0.21.0"
 isort = "^5.12.0"
 black = "^23.7.0"
 flake8 = "^6.1.0"
-python-semantic-release = "^8.0.8"
+python-semantic-release = "7.33.0"
 
 [build-system]
 requires = ["poetry-core", "numpy", "setuptools"]
@@ -45,13 +45,14 @@ profile = "black"
 line-length = 88
 
 [tool.semantic_release]
-branch = "dev"
+branch = "build/migrate-to-poetry"
 version_variable = "MapAnalyzer/__init__.py:__version__"
 version_toml = "pyproject.toml:tool.poetry.version"
 version_source = "tag"
 commit_version_number = true # required for version_source = "tag"
 tag_commit = true
+# might want these true later
 upload_to_pypi = false
 upload_to_release = false
 hvcs = "github"
-commit_message = "{version} [skip ci]"
+commit_message = "{version} [skip ci]" # skip triggering ci pipelines for version commits
