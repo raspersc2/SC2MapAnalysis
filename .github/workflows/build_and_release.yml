@@ -13,16 +13,36 @@ jobs:
     outputs:
       upload_url: ${{ steps.create_release.outputs.upload_url }}
     steps:
-      - name: Create release
-        id: create_release
-        uses: actions/create-release@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Checkout repository
+        uses: actions/checkout@v3
         with:
-          tag_name: ${{ github.ref }}
-          release_name: Release ${{ github.ref }}
-          draft: false
-          prerelease: false
+          ref: ${{ github.head_ref }}
+          token: ${{ secrets.GH_TOKEN_MA }}
+          fetch-depth: 0
+      # install poetry
+      - name: Install poetry
+        run: pipx install poetry==1.6.1
+      # set-up python with cache
+      - name: Setup Python 3.11
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+          cache: 'poetry'
+      # install requirements
+      - name: Install requirements
+        run: poetry install --with dev
+      # semantic release
+      - name: Python Semantic Release
+        env:
+          GH_TOKEN: ${{ secrets.GH_TOKEN_MA }}
+        run: |
+          set -o pipefail
+          # Set git details
+          git config --global user.name "github-actions"
+          git config --global user.email "github-actions@github.com"
+          # run semantic-release
+          poetry run semantic-release publish -v DEBUG -D commit_author="github-actions <action@github.com>"
+
 
   release_assets:
     name: Release assets
