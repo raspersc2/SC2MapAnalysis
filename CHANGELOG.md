@@ -1,5 +1,46 @@
 # Changelog
 
+<!--next-version-placeholder-->
+
+## v0.1.0 (2023-09-03)
+### Feature
+* Add ladder compatible version of the c extension in the repo ([`500a900`](https://github.com/raspersc2/SC2MapAnalysis/commit/500a900d4d5ae22ab5d1391a23dd45ca129e43f7))
+* Add ladder compatible version of the c extension in the repo ([`9214a2c`](https://github.com/raspersc2/SC2MapAnalysis/commit/9214a2c4e476093e022e9e7503782c918c02dce6))
+* Fix pyastar ref in requirements ([`c29e50a`](https://github.com/raspersc2/SC2MapAnalysis/commit/c29e50a8d98b4fc27ea546938cca0b9d174c49a2))
+* Use custom implementation ofr pyastar ([`1c6b74c`](https://github.com/raspersc2/SC2MapAnalysis/commit/1c6b74ccc472de698db0a95a6b2baef433b92465))
+* Polygon now has top,bottom,right,left properties ([`da01077`](https://github.com/raspersc2/SC2MapAnalysis/commit/da01077dbabba77e4d7e94fa49c71bb3324b2f75))
+* Debugger now plots choke side a and side b with text indicators (sA, sB) ([`d9fe997`](https://github.com/raspersc2/SC2MapAnalysis/commit/d9fe9971b8d056bf02840d1391dd862530c93e54))
+* Fix pyastar ref in requirements ([`c0d98f0`](https://github.com/raspersc2/SC2MapAnalysis/commit/c0d98f007467b80bac319262ef1d660dd9b85979))
+* Use custom implementation ofr pyastar ([`2b1e9ef`](https://github.com/raspersc2/SC2MapAnalysis/commit/2b1e9ef152f34fd74485be224d6433ae733ada11))
+* Polygon now has top,bottom,right,left properties ([`a43a283`](https://github.com/raspersc2/SC2MapAnalysis/commit/a43a283a5a50cb43bbd125098efdfb253671d76a))
+* Debugger now plots choke side a and side b with text indicators (sA, sB) ([`595a964`](https://github.com/raspersc2/SC2MapAnalysis/commit/595a96441c2ed1ae6fc528e88efb64423ae8fcac))
+* Polygon now has top,bottom,right,left properties ([`8f5b0c9`](https://github.com/raspersc2/SC2MapAnalysis/commit/8f5b0c9cd48a2f23dd1666f14becd41aae815df7))
+* Debugger now plots choke side a and side b with text indicators (sA, sB) ([`9dd8c07`](https://github.com/raspersc2/SC2MapAnalysis/commit/9dd8c072ebab8a66b99c42f792d7cde4c87a1fce))
+* Add `include_destructables`  to  `get_climber_grid` in mapdata ([`7286ebd`](https://github.com/raspersc2/SC2MapAnalysis/commit/7286ebd7e073bc60a950a7b7d369c38f29f3f3f5))
+* MapData now accepts a `corner_distance` variable that will determin the corner distance calculation ([`29fe16e`](https://github.com/raspersc2/SC2MapAnalysis/commit/29fe16eda055a3c2fe0fe2c01927b1ddfbdb1a4f))
+
+### Fix
+* Correct import ([`ffb0828`](https://github.com/raspersc2/SC2MapAnalysis/commit/ffb082801dd2317e65adaec019e24e6a01962c67))
+* Deprecated time.clock() on python version > 3.7 ([`e83832d`](https://github.com/raspersc2/SC2MapAnalysis/commit/e83832d43adb89fbb62ef42f6d438a85f0be3ed4))
+* All doc examples now work ([`e6073df`](https://github.com/raspersc2/SC2MapAnalysis/commit/e6073df5e9b04607cc7992d9c32182baa1c8ae4e))
+* CLI version parse error ([`c133b7d`](https://github.com/raspersc2/SC2MapAnalysis/commit/c133b7d9141a1fc6ca59dd91ceaceacd1a547aae))
+* Reverts version parse error ([`47b4471`](https://github.com/raspersc2/SC2MapAnalysis/commit/47b44715e82487f8b36086a337dd8cb0c228cdf6))
+* Reverts version parse error ([`d69e37d`](https://github.com/raspersc2/SC2MapAnalysis/commit/d69e37d91b7d1f5ef0a42a0df698812b6009f76c))
+* Reverts version parse error ([`411e72e`](https://github.com/raspersc2/SC2MapAnalysis/commit/411e72e6d6c52865aaa2ae7e8099e2dd9c40c694))
+* Reverts version parse error ([`69cf447`](https://github.com/raspersc2/SC2MapAnalysis/commit/69cf447918bf302aa74886bd412351c7eecc85a8))
+* Scout now walks the path ([`2f04b03`](https://github.com/raspersc2/SC2MapAnalysis/commit/2f04b035baae8eacceaa7d5d127fe7acf7315d11))
+* Temp fix for climber grid test ([`1f8f611`](https://github.com/raspersc2/SC2MapAnalysis/commit/1f8f611ccb843ec903a8cf777a6b0879659d3b0d))
+* Int cast bug ([`b055bf4`](https://github.com/raspersc2/SC2MapAnalysis/commit/b055bf4fb5fcd82e6d8e45025451f6ced8edc2b3))
+* Temp fix for climber grid test ([`b75c1c6`](https://github.com/raspersc2/SC2MapAnalysis/commit/b75c1c6bba5a0fac2640808cc1c86f3d4609274a))
+* Temp fix for climber grid test ([`e46ed3a`](https://github.com/raspersc2/SC2MapAnalysis/commit/e46ed3ad8d38545f8311af2b338af28c40b0dede))
+
+### Documentation
+* **release:** Pretty up changelog ([`171d772`](https://github.com/raspersc2/SC2MapAnalysis/commit/171d772fb6deba51291e0abc1d13c8f83632110b))
+* **release:** Pretty up changelog ([`cc066b9`](https://github.com/raspersc2/SC2MapAnalysis/commit/cc066b9d6b23ce1b53712339b94329f625018ca7))
+* **release:** Pretty up changelog ([`c8a697f`](https://github.com/raspersc2/SC2MapAnalysis/commit/c8a697fc8c341212c4e5242568c308bc998fc65c))
+* **release:** Pretty up changelog ([`731bd04`](https://github.com/raspersc2/SC2MapAnalysis/commit/731bd042c1912a9bf357f37b2df9fe315dea1343))
+
+
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
 ### [0.0.87](https://github.com/spudde123/SC2MapAnalysis/compare/v0.0.86...v0.0.87) (2021-05-04)
