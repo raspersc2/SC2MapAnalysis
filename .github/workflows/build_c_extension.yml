@@ -22,7 +22,7 @@ jobs:
           ref: ${{ github.head_ref }}
       # install poetry
       - name: Install poetry
-        run: pipx install poetry==1.5
+        run: pipx install poetry
       # set-up python with cache
       - name: Setup Python ${{ matrix.python-version }}
         uses: actions/setup-python@v4
