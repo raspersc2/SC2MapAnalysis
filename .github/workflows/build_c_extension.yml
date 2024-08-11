@@ -37,7 +37,9 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: ${{ matrix.os }}_python${{ matrix.python-version }}
-          path: ./mapanalyzerext*
+          path: |
+            ./mapanalyzerext*
+            mapanalyzerext*
 
   commit:
     name: Commit all binaries
@@ -50,7 +52,7 @@ jobs:
           ref: ${{ github.head_ref }}
 
       - name: Download all artifacts
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
           path: ./artifacts/
 
