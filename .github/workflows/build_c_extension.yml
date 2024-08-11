@@ -36,7 +36,7 @@ jobs:
       - name: Upload the artifact
         uses: actions/upload-artifact@v4
         with:
-          # name: ${{ matrix.os }}_python${{ matrix.python-version }}
+          name: ${{ matrix.os }}_python${{ matrix.python-version }}
           path: ./mapanalyzerext*
 
   commit:
@@ -61,6 +61,11 @@ jobs:
         run: |
           mkdir -p ./map_analyzer/cext/
           mv ./artifacts/* ./map_analyzer/cext/
+
+      - name: Move files from subdirectories to /map_analyzer/cext/ and remove folders
+        run: |
+          find ./map_analyzer/cext/ -mindepth 2 -type f -exec mv -t ./map_analyzer/cext/ {} +
+          find ./map_analyzer/cext/ -type d -empty -delete
 
       - name: List moved files (debugging)
         run: ls -R ./map_analyzer/cext/
