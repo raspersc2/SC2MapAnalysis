@@ -6,7 +6,6 @@ on:
 jobs:
   build:
     name: Build release
-
     runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
@@ -15,34 +14,34 @@ jobs:
         python-version: ['3.10', '3.11', '3.12']
 
     steps:
-      # check-out repo
       - name: Checkout repository
         uses: actions/checkout@v3
         with:
           ref: ${{ github.head_ref }}
-      # install poetry
+
       - name: Install poetry
         run: pipx install poetry
-      # set-up python with cache
+
       - name: Setup Python ${{ matrix.python-version }}
         uses: actions/setup-python@v4
         with:
           python-version: ${{ matrix.python-version }}
           cache: 'poetry'
-      # Install requirements and build extension
+
       - name: Install requirements and build extension
         run: |
           poetry install --with dev
           python -c "import shutil, glob, os; [shutil.copy(f, '.') for f in glob.glob('mapanalyzerext*') if not os.path.exists(os.path.join('.', os.path.basename(f)))]"
-      # Move the binary to the desired directory
+
       - name: Move the binary to /map_analyzer/cext
         run: mv ./mapanalyzerext* ./map_analyzer/cext/
-      - uses: actions/upload-artifact@v3
+
+      - name: Upload the artifact
+        uses: actions/upload-artifact@v3
         with:
-          name: ${{ matrix.os }}_python${{ matrix.python-version }}
-          path: |
-            ./mapanalyzerext*
-            mapanalyzerext*
+          name: binary_${{ matrix.os }}_python${{ matrix.python-version }}
+          path: ./map_analyzer/cext/mapanalyzerext*
+
   commit:
     name: Commit all binaries
     runs-on: ubuntu-latest
