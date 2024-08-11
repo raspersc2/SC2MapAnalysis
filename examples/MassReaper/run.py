@@ -34,7 +34,7 @@ if __name__ == "__main__":
                 "GoldenAura513AIE",
                 "HardLead513AIE",
                 "Oceanborn513AIE",
-                "SiteDelta513AIE"
+                "SiteDelta513AIE",
             ]
         )
         random_race = random.choice(
