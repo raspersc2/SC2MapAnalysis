@@ -15,7 +15,7 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           ref: ${{ github.head_ref }}
 
@@ -23,7 +23,7 @@ jobs:
         run: pipx install poetry
 
       - name: Setup Python ${{ matrix.python-version }}
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v5
         with:
           python-version: ${{ matrix.python-version }}
           cache: 'poetry'
@@ -33,14 +33,11 @@ jobs:
           poetry install --with dev
           python -c "import shutil, glob, os; [shutil.copy(f, '.') for f in glob.glob('mapanalyzerext*') if not os.path.exists(os.path.join('.', os.path.basename(f)))]"
 
-
       - name: Upload the artifact
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
-          name: ${{ matrix.os }}_python${{ matrix.python-version }}
-          path: |
-            ./mapanalyzerext*
-            mapanalyzerext*
+          # name: ${{ matrix.os }}_python${{ matrix.python-version }}
+          path: ./mapanalyzerext*
 
   commit:
     name: Commit all binaries
@@ -77,5 +74,5 @@ jobs:
         run: |
           git add ./map_analyzer/cext/*
           git status
-          git commit -m "Add binaries for multiple platforms and Python versions" || echo "No changes to commit"
+          git commit -m "Add all binaries for multiple platforms and Python versions" || echo "No changes to commit"
           git push origin ${{ github.ref }}
