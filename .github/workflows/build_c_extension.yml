@@ -33,14 +33,14 @@ jobs:
           poetry install --with dev
           python -c "import shutil, glob, os; [shutil.copy(f, '.') for f in glob.glob('mapanalyzerext*') if not os.path.exists(os.path.join('.', os.path.basename(f)))]"
 
-      - name: Move the binary to /map_analyzer/cext
-        run: mv ./mapanalyzerext* ./map_analyzer/cext/
 
       - name: Upload the artifact
         uses: actions/upload-artifact@v3
         with:
-          name: binary_${{ matrix.os }}_python${{ matrix.python-version }}
-          path: ./map_analyzer/cext/mapanalyzerext*
+          name: ${{ matrix.os }}_python${{ matrix.python-version }}
+          path: |
+            ./mapanalyzerext*
+            mapanalyzerext*
 
   commit:
     name: Commit all binaries
@@ -77,5 +77,5 @@ jobs:
         run: |
           git add ./map_analyzer/cext/*
           git status
-          git commit -m "Add all binaries for multiple platforms and Python versions" || echo "No changes to commit"
+          git commit -m "Add binaries for multiple platforms and Python versions" || echo "No changes to commit"
           git push origin ${{ github.ref }}
