@@ -29,12 +29,12 @@ if __name__ == "__main__":
         # Local game
         random_map = random.choice(
             [
-                "2000AtmospheresAIE",
-                "BerlingradAIE",
-                "BlackburnAIE",
-                "CuriousMindsAIE",
-                "GlitteringAshesAIE",
-                "HardwireAIE",
+                "Equilibrium513AIE",
+                "Gresvan513AIE",
+                "GoldenAura513AIE",
+                "HardLead513AIE",
+                "Oceanborn513AIE",
+                "SiteDelta513AIE"
             ]
         )
         random_race = random.choice(

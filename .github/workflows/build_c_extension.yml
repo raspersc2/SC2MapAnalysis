@@ -12,7 +12,7 @@ jobs:
       fail-fast: false
       matrix:
         os: [windows-latest, macos-latest, ubuntu-latest]
-        python-version: ['3.11']
+        python-version: ['3.10', '3.11', '3.12']
 
     steps:
       # check-out repo
@@ -34,6 +34,20 @@ jobs:
         run: |
           poetry install --with dev
           python -c "import shutil, glob, os; [shutil.copy(f, '.') for f in glob.glob('mapanalyzerext*') if not os.path.exists(os.path.join('.', os.path.basename(f)))]"
+      # Move the binary to the desired directory
+      - name: Move the binary to /map_analyzer/cext
+        run: mv ./mapanalyzerext* ./map_analyzer/cext/
+      # Set up Git
+      - name: Configure Git
+        run: |
+          git config --global user.name "GitHub Actions"
+          git config --global user.email "actions@github.com"
+      # Commit the binary
+      - name: Commit the binaries
+        run: |
+          git add ./map_analyzer/cext/mapanalyzerext*
+          git commit -m "Add binary for ${{ matrix.os }} with Python ${{ matrix.python-version }}"
+          git push origin ${{ github.ref }}
       - uses: actions/upload-artifact@v3
         with:
           name: ${{ matrix.os }}_python${{ matrix.python-version }}
