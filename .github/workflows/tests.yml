@@ -30,7 +30,7 @@ jobs:
         run: |
           poetry run pytest --html=html/${{ matrix.os }}-test-results-${{ matrix.python-version }}.html
       - name: Upload pytest test results
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v4
         with:
           name: pytest-results-${{ matrix.os }}-${{ matrix.python-version }}
           path: html/${{ matrix.os }}-test-results-${{ matrix.python-version }}.html
