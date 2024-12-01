@@ -13,7 +13,7 @@ jobs:
     strategy:
       matrix:
         os: [ ubuntu-latest ]
-        python-version: [ 3.11 ]
+        python-version: [ 3.12 ]
 
     steps:
       # check-out repo
@@ -24,7 +24,7 @@ jobs:
           python-version: ${{ matrix.python-version }}
       - name: Install dependencies
         run: |
-          pipx install poetry==1.6.1
+          pipx install poetry==1.8.4
           poetry install --with dev
       # run linters
       - name: Run linters
