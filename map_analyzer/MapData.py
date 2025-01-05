@@ -6,7 +6,6 @@ from typing import Dict, List, Optional, Set, Tuple, Union
 import numpy as np
 from loguru import logger
 from numpy import ndarray
-from pkg_resources import DistributionNotFound, get_distribution
 from sc2.bot_ai import BotAI
 from sc2.position import Point2
 from scipy.ndimage import binary_fill_holes, center_of_mass, generate_binary_structure
@@ -27,11 +26,6 @@ from .constants import (
     MIN_REGION_AREA,
 )
 from .exceptions import CustomDeprecationWarning
-
-try:
-    __version__ = get_distribution("sc2mapanalyzer")
-except DistributionNotFound:
-    __version__ = "dev"
 
 WHITE = "\u001b[32m"
 
@@ -113,10 +107,10 @@ class MapData:
         if not self.arcade:
             self.base_locations: list = bot.expansion_locations_list
         else:
-            logger.info(f" {__version__} Starting in Arcade mode")
+            logger.info("Starting in Arcade mode")
             self.base_locations: list = []
 
-        logger.info(f"{__version__} Compiling {self.map_name} " + WHITE)
+        logger.info(f"Compiling {self.map_name} " + WHITE)
 
         self._compile_map()
 
