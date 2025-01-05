@@ -58,7 +58,7 @@ class MapData:
             corner_distance  # the lower this value is, the sharper the corners will be
         )
         self.arcade = arcade
-        self.version = __version__
+        self.version = "0.2.0"
         self.map_name: str = bot.game_info.map_name
         self.placement_arr: ndarray = bot.game_info.placement_grid.data_numpy
         self.path_arr: ndarray = bot.game_info.pathing_grid.data_numpy
